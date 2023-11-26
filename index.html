@@ -3,14 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>leaks</title>
+  <title>My Music Visualizer</title>
+
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: url('DJ logo Photo.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    h1 {
+      color: #fff; /* Change to your desired text color */
+    }
+
+    audio {
+      width: 100%;
+      max-width: 400px; /* Adjust the maximum width of the audio player */
+    }
+  </style>
 </head>
 <body>
-  <h1>My Music Player</h1>
+  <div>
+    <h1>My Music Visualizer</h1>
 
-  <audio controls>
-    <source src="trap.mp3" type="audio/mp3"
-    Your browser does not support the audio tag.
-  </audio>
+    <audio controls>
+      <source src="trap.mp3" type="audio/mp3">
+      Your browser does not support the audio tag.
+    </audio>
+  </div>
 </body>
 </html>
