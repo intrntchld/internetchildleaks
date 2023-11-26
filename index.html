@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INTERNET CHILD</title>
+  <title>Windows 98 Radio Station</title>
 
   <style>
     /* Windows 98 desktop styles */
@@ -15,7 +15,6 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      overflow: hidden; /* Hide overflow to prevent scroll bars */
     }
 
     .desktop {
@@ -113,19 +112,11 @@
     }
 
     /* Additional styles for dynamic elements */
-    #visualizer-container {
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1; /* Send to the background */
-    }
-
     #visualizer {
       width: 100%;
-      height: 100%;
+      height: 100px;
       background-color: #000; /* Visualizer background color */
+      margin-top: 20px;
     }
 
     .moving-icon {
@@ -166,14 +157,7 @@
       Back to Main Page
     </button>
 
-    <!-- Visualizer Container -->
-    <div id="visualizer-container">
-      <div id="visualizer"></div>
-      <!-- Moving Icons -->
-      <div class="moving-icon">🎵</div>
-      <div class="moving-icon">🎤</div>
-      <!-- Add more icons as needed -->
-    </div>
+    <div id="visualizer"></div>
 
     <audio controls id="musicPlayer" controlsList="nodownload" autoplay>
       <source src="dnb.mp3" type="audio/mp3">
@@ -187,7 +171,7 @@
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
       var playlistButtonsContainer = document.getElementById("playlistButtons");
-      var visualizerContainer = document.getElementById("visualizer-container");
+      var visualizer = document.getElementById("visualizer");
 
       var playlist = [
         {
@@ -231,6 +215,11 @@
       });
 
       musicPlayer.src = playlist[0].url;
+
+      // Create dynamic moving icons
+      createMovingIcon("🎵", 50, 50);
+      createMovingIcon("🎤", 80, 120);
+      // Add more icons as needed
     });
 
     function openApp(app) {
@@ -255,6 +244,15 @@
 
       radioApp.style.display = 'none';
       desktop.style.display = 'grid';
+    }
+
+    function createMovingIcon(icon, top, left) {
+      var movingIcon = document.createElement("div");
+      movingIcon.className = "moving-icon";
+      movingIcon.innerHTML = icon;
+      movingIcon.style.top = top + "px";
+      movingIcon.style.left = left + "px";
+      document.body.appendChild(movingIcon);
     }
   </script>
 </body>
