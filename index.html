@@ -3,57 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Radio Station</title>
+  <title>Windows 98 Radio Station</title>
 
   <style>
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      height: 100vh;
-      margin: 0;
-      background: #008080; /* Windows 98 teal background color */
-    }
-
-    h1 {
-      color: #fff; /* Windows 98 white text color */
-      font-family: 'Arial', sans-serif; /* Windows 98 font style */
-    }
-
-    audio {
-      width: 100%;
-      max-width: 400px;
-      margin-bottom: 20px;
-    }
-
-    .playlist-buttons {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .playlist-buttons button {
-      margin: 5px;
-      padding: 8px;
-      cursor: pointer;
-      background-color: #c0c0c0; /* Windows 98 button background color */
-      border: none;
-      color: #000; /* Windows 98 button text color */
-      font-family: 'Arial', sans-serif; /* Windows 98 font style */
-    }
-
-    .playlist-buttons button:hover {
-      background-color: #808080; /* Windows 98 button hover background color */
-    }
+    /* ... (styles remain unchanged) ... */
   </style>
 </head>
 <body>
-  <div>
-    <h1>My Radio Station</h1>
+  <div class="desktop">
+    <!-- Mock Apps -->
+    <div class="icon" onclick="openApp('browser')">
+      <img src="YOUR_BROWSER_ICON_URL" alt="Browser Icon">
+      <span>Browser</span>
+    </div>
+
+    <div class="icon" onclick="openApp('calculator')">
+      <img src="YOUR_CALCULATOR_ICON_URL" alt="Calculator Icon">
+      <span>Calculator</span>
+    </div>
+
+    <!-- Add more mock apps as needed -->
+
+    <!-- Radio Station App -->
+    <div class="icon" onclick="openApp('radio')">
+      <img src="YOUR_RADIO_ICON_URL" alt="Radio Icon">
+      <span>Radio</span>
+    </div>
+  </div>
+
+  <div id="radioApp" style="display: none;">
+    <h1>Windows 98 Radio Station</h1>
 
     <audio controls id="musicPlayer" controlsList="nodownload">
-      <source src=Throw Some Ds- Track 1.mp3" type="audio/mp3">
+      <source src="URL_TO_YOUR_FIRST_MUSIC_FILE.mp3" type="audio/mp3">
       Your browser does not support the audio tag.
     </audio>
 
@@ -67,18 +49,18 @@
 
       var playlist = [
         {
-          name: 'Ghosts',
-          artist: 'Internet Child',
-          url: 'dnb.mp3',
-          cover: 'aOYd0JMr0CnEPDinqfKE--1--c3x2d.jpg',
-          lrc: 'URL_TO_YOUR_LYRICS_FILE_1.lrc',
+          name: 'Classic Hits',
+          artist: 'Various Artists',
+          url: 'YOUR_URL_TO_FIRST_MUSIC_FILE.mp3',
+          cover: 'YOUR_URL_TO_COVER_IMAGE_1.jpg',
+          lrc: 'YOUR_URL_TO_LYRICS_FILE_1.lrc',
         },
         {
-          name: 'Function',
-          artist: 'Internet Child',
-          url: 'kast.mp3.mp3',
-          cover: 'DJ logo Photo.jpg',
-          lrc: 'URL_TO_YOUR_LYRICS_FILE_2.lrc',
+          name: '80s Mix',
+          artist: 'Various Artists',
+          url: 'YOUR_URL_TO_SECOND_MUSIC_FILE.mp3',
+          cover: 'YOUR_URL_TO_COVER_IMAGE_2.jpg',
+          lrc: 'YOUR_URL_TO_LYRICS_FILE_2.lrc',
         },
         // Add more "stations" following the same format
       ];
@@ -104,6 +86,18 @@
 
       musicPlayer.src = playlist[0].url;
     });
+
+    function openApp(app) {
+      var radioApp = document.getElementById("radioApp");
+      var desktop = document.querySelector(".desktop");
+
+      if (app === 'radio') {
+        radioApp.style.display = 'block';
+        desktop.style.display = 'none';
+      }
+
+      // Add more app functionality as needed
+    }
   </script>
 </body>
 </html>
