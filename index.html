@@ -6,19 +6,80 @@
   <title>Windows 98 Radio Station</title>
 
   <style>
-    /* ... (styles remain unchanged) ... */
+    body {
+      background: #008080; /* Windows 98 teal background color */
+      margin: 0;
+      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+    }
+
+    .desktop {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      background-color: #c0c0c0; /* Windows 98 icon background color */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .icon img {
+      width: 30px;
+      height: 30px;
+    }
+
+    h1 {
+      color: #fff; /* Windows 98 white text color */
+      text-align: center;
+    }
+
+    audio {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 10px;
+    }
+
+    .playlist-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .playlist-buttons button {
+      margin: 5px;
+      padding: 8px;
+      cursor: pointer;
+      background-color: #c0c0c0; /* Windows 98 button background color */
+      border: none;
+      color: #000; /* Windows 98 button text color */
+      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+    }
+
+    .playlist-buttons button:hover {
+      background-color: #808080; /* Windows 98 button hover background color */
+    }
   </style>
 </head>
 <body>
   <div class="desktop">
     <!-- Mock Apps -->
     <div class="icon" onclick="openApp('browser')">
-      <img s<img src="<img src="https://icons.iconarchive.com/icons/inipagi/business-economic/16/browser-icon.png" width="16" height="16">
+      <img src="https://via.placeholder.com/30" alt="Browser Icon">
       <span>Browser</span>
     </div>
 
     <div class="icon" onclick="openApp('calculator')">
-      <img src="<img src="<img src="https://icons.iconarchive.com/icons/pelfusion/folded-flat/16/Calculator-icon.png" width="16" height="16">>
+      <img src="https://via.placeholder.com/30" alt="Calculator Icon">
       <span>Calculator</span>
     </div>
 
@@ -26,13 +87,13 @@
 
     <!-- Radio Station App -->
     <div class="icon" onclick="openApp('radio')">
-      <img src="<img src="https://icons.iconarchive.com/icons/icons8/windows-8/16/Music-Radio-1-icon.png" width="16" height="16">" alt="Radio Icon">
+      <img src="https://via.placeholder.com/30" alt="Radio Icon">
       <span>Radio</span>
     </div>
   </div>
 
   <div id="radioApp" style="display: none;">
-    <h1>Internet Child Radio Station</h1>
+    <h1>Windows 98 Radio Station</h1>
 
     <audio controls id="musicPlayer" controlsList="nodownload">
       <source src="URL_TO_YOUR_FIRST_MUSIC_FILE.mp3" type="audio/mp3">
@@ -49,19 +110,18 @@
 
       var playlist = [
         {
-       name: 'Ghosts',
-          artist: 'Internet Child',
-          url: 'dnb.mp3',
-          cover: 'aOYd0JMr0CnEPDinqfKE--1--c3x2d.jpg',
-         ,
-        },
+          name: 'Classic Hits',
+          artist: 'Various Artists',
+          url: 'URL_TO_YOUR_FIRST_MUSIC_FILE.mp3',
+          cover: 'URL_TO_YOUR_COVER_IMAGE_1.jpg',
+          lrc: 'URL_TO_YOUR_LYRICS_FILE_1.lrc',
         },
         {
-        name: 'Function',
-          artist: 'Internet Child',
-          url: 'kast.mp3.mp3',
-          cover: 'DJ logo Photo.jpg',
-
+          name: '80s Mix',
+          artist: 'Various Artists',
+          url: 'URL_TO_YOUR_SECOND_MUSIC_FILE.mp3',
+          cover: 'URL_TO_YOUR_COVER_IMAGE_2.jpg',
+          lrc: 'URL_TO_YOUR_LYRICS_FILE_2.lrc',
         },
         // Add more "stations" following the same format
       ];
