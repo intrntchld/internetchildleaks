@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Windows 98 Radio Station</title>
+  <title>Internet child </title>
 
   <style>
     /* Windows 98 desktop styles */
@@ -11,11 +11,15 @@
       background: #008080; /* Windows 98 teal background color */
       margin: 0;
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
 
     .desktop {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       padding: 10px;
     }
@@ -36,6 +40,10 @@
     .icon img {
       width: 30px;
       height: 30px;
+    }
+
+    .icon span {
+      font-size: 10px; /* Adjusted font size for app names */
     }
 
     h1 {
@@ -161,10 +169,5 @@
       if (app === 'radio') {
         radioApp.style.display = 'block';
         desktop.style.display = 'none';
-      }
-
-      // Add more app functionality as needed
-    }
-  </script>
-</body>
-</html>
+      } else if (app === 'browser') {
+        alert('Error: This is a simulation. The
