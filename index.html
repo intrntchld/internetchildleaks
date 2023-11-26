@@ -56,6 +56,7 @@
     #radioApp {
       text-align: center;
       display: none; /* Initially hidden */
+      padding-bottom: 50px; /* Space for music player at the bottom */
     }
 
     #backButton {
@@ -81,14 +82,15 @@
     }
 
     #musicPlayer {
-      margin-top: 20px;
-      width: 90%; /* Increased width for better visibility */
+      width: 100%; /* Take up the whole width */
       max-width: 500px; /* Maximum width for consistency */
       background-color: #c0c0c0; /* Windows 98 button background color */
       border: none;
       color: #000; /* Windows 98 button text color */
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
       padding: 12px;
+      position: fixed;
+      bottom: 0; /* Stick to the bottom */
     }
 
     .playlist-buttons {
@@ -120,7 +122,7 @@
       top: 0;
       left: 0;
       z-index: -1; /* Send to the background */
-      display: none; /* Initially hidden */
+      pointer-events: none; /* Allow clicks to go through visualizer */
     }
 
     #visualizer {
@@ -133,6 +135,7 @@
       position: absolute;
       animation: moveIcon 1s linear infinite alternate;
       display: none; /* Initially hidden */
+      pointer-events: none; /* Allow clicks to go through icons */
     }
 
     @keyframes moveIcon {
@@ -177,21 +180,21 @@
       <!-- Add more icons as needed -->
     </div>
 
-    <audio controls id="musicPlayer" controlsList="nodownload" onplay="startAnimation()">
-      <source src="dnb.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-    </audio>
+    <!-- Music Player and Playlist -->
+    <div id="musicPlayerContainer">
+      <audio controls id="musicPlayer" controlsList="nodownload" autoplay>
+        <source src="dnb.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+      </audio>
 
-    <div class="playlist-buttons" id="playlistButtons"></div>
+      <div class="playlist-buttons" id="playlistButtons"></div>
+    </div>
   </div>
 
   <script>
-    var animationStarted = false;
-
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
       var playlistButtonsContainer = document.getElementById("playlistButtons");
-      var visualizerContainer = document.getElementById("visualizer-container");
 
       var playlist = [
         {
@@ -234,11 +237,6 @@
         musicPlayer.src = playlist[nextIndex].url;
       });
 
-      // Initialize moving icons and visualizer
-      createMovingIcon("🎵");
-      createMovingIcon("🎤");
-      initializeVisualizer();
-
       // Check if music is initially playing
       if (!musicPlayer.paused) {
         startAnimation();
@@ -252,6 +250,7 @@
       if (app === 'radio') {
         radioApp.style.display = 'block';
         desktop.style.display = 'none';
+        startAnimation();
       } else if (app === 'browser') {
         alert('Error: This is a simulation. The browser is not functional.');
       } else if (app === 'calculator') {
@@ -272,29 +271,14 @@
       stopAnimation();
     }
 
-    function createMovingIcon(icon) {
-      var movingIcon = document.createElement("div");
-      movingIcon.className = "moving-icon";
-      movingIcon.innerHTML = icon;
-      document.getElementById("visualizer-container").appendChild(movingIcon);
-    }
-
-    function initializeVisualizer() {
-      // Add visualizer initialization code here
-      // For simplicity, you can use the existing visualizer code
-    }
-
     function startAnimation() {
-      if (!animationStarted) {
-        // Start moving icons and show visualizer
-        document.querySelectorAll(".moving-icon").forEach(function(icon) {
-          icon.style.animation = "moveIcon 1s linear infinite alternate";
-          icon.style.display = "block";
-        });
+      // Start moving icons and show visualizer
+      document.querySelectorAll(".moving-icon").forEach(function(icon) {
+        icon.style.animation = "moveIcon 1s linear infinite alternate";
+        icon.style.display = "block";
+      });
 
-        document.getElementById("visualizer-container").style.display = "block";
-        animationStarted = true;
-      }
+      document.getElementById("visualizer-container").style.zIndex = "1"; // Bring visualizer to the foreground
     }
 
     function stopAnimation() {
@@ -304,8 +288,7 @@
         icon.style.display = "none";
       });
 
-      document.getElementById("visualizer-container").style.display = "none";
-      animationStarted = false;
+      document.getElementById("visualizer-container").style.zIndex = "-1"; // Send visualizer to the background
     }
   </script>
 </body>
