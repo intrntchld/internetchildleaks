@@ -98,12 +98,26 @@
       animation: moveIcon 5s linear infinite alternate;
       display: none; /* Initially hidden */
       pointer-events: none; /* Allow clicks to go through icons */
-      z-index: 1; /* Bring the icons to the foreground */
+      z-index: 3; /* Bring the icons to the foreground */
     }
 
     @keyframes moveIcon {
       to {
         transform: translate(calc(100vw - 50px), calc(100vh - 50px));
+      }
+    }
+
+    .music-icon {
+      position: absolute;
+      animation: bounceIcon 3s linear infinite alternate;
+      display: none; /* Initially hidden */
+      pointer-events: none; /* Allow clicks to go through icons */
+      z-index: 2; /* Bring the icons to the foreground */
+    }
+
+    @keyframes bounceIcon {
+      to {
+        transform: translateY(-20px);
       }
     }
   </style>
@@ -138,6 +152,9 @@
       <div class="moving-icon">🎵</div>
       <div class="moving-icon">🎤</div>
       <!-- Add more icons as needed -->
+      <div class="music-icon">🎸</div>
+      <div class="music-icon">🎹</div>
+      <div class="music-icon">🎺</div>
     </div>
 
     <div id="musicPlayerContainer">
@@ -237,7 +254,7 @@
 
     function startAnimation() {
       // Start moving icons and show visualizer
-      document.querySelectorAll(".moving-icon").forEach(function(icon) {
+      document.querySelectorAll(".moving-icon, .music-icon").forEach(function(icon) {
         icon.style.animation = "moveIcon 5s linear infinite alternate";
         icon.style.display = "block";
       });
@@ -247,7 +264,7 @@
 
     function stopAnimation() {
       // Stop moving icons and hide visualizer
-      document.querySelectorAll(".moving-icon").forEach(function(icon) {
+      document.querySelectorAll(".moving-icon, .music-icon").forEach(function(icon) {
         icon.style.animation = "none";
         icon.style.display = "none";
       });
