@@ -29,16 +29,16 @@
       left: 10px;
       padding: 8px;
       cursor: pointer;
-      background-color: #008080; /* Windows 98 teal background color */
+      background-color: #c0c0c0; /* Windows 98 button background color */
       border: none;
-      color: #fff; /* Windows 98 white text color */
+      color: #000; /* Windows 98 button text color */
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
       display: flex;
       align-items: center;
     }
 
     #backButton:hover {
-      background-color: #006666; /* Darker teal on hover */
+      background-color: #808080; /* Windows 98 button hover background color */
     }
 
     #backButton img {
@@ -59,7 +59,7 @@
     #visualizer {
       width: 100%;
       height: 100%;
-      /* Removed background-color for transparency */
+      background-color: #000; /* Visualizer background color */
     }
 
     .moving-icon {
@@ -80,19 +80,18 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: #008080; /* Windows 98 teal background color */
+      background-color: #c0c0c0; /* Windows 98 button background color */
       padding: 12px;
       box-sizing: border-box;
       display: none; /* Initially hidden */
       z-index: 1; /* Bring to the foreground */
-      color: #fff; /* Windows 98 white text color */
     }
 
     #musicPlayer {
       width: 100%; /* Take up the whole width */
       background-color: inherit;
       border: none;
-      color: #fff; /* Windows 98 white text color */
+      color: #000; /* Windows 98 button text color */
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
     }
 
@@ -106,25 +105,14 @@
       margin: 5px;
       padding: 8px;
       cursor: pointer;
-      background-color: #008080; /* Windows 98 teal background color */
+      background-color: #c0c0c0; /* Windows 98 button background color */
       border: none;
-      color: #fff; /* Windows 98 white text color */
+      color: #000; /* Windows 98 button text color */
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
     }
 
     .playlist-buttons button:hover {
-      background-color: #006666; /* Darker teal on hover */
-    }
-
-    /* Popup styles */
-    #popup {
-      position: fixed;
-      background-color: #008080; /* Windows 98 teal background color */
-      color: #fff; /* Windows 98 white text color */
-      padding: 10px;
-      cursor: pointer;
-      z-index: 1; /* Bring to the foreground */
-      display: none; /* Initially hidden */
+      background-color: #808080; /* Windows 98 button hover background color */
     }
   </style>
 </head>
@@ -149,18 +137,12 @@
 
       <div class="playlist-buttons" id="playlistButtons"></div>
     </div>
-
-    <!-- Popup content -->
-    <div id="popup" onclick="openLink()">
-      Click me
-    </div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
       var playlistButtonsContainer = document.getElementById("playlistButtons");
-      var popup = document.getElementById("popup");
 
       var playlist = [
         {
@@ -195,9 +177,6 @@
       if (!musicPlayer.paused) {
         startAnimation();
       }
-
-      // Start popup animation
-      startPopupAnimation();
     });
 
     function backToMainPage() {
@@ -231,24 +210,6 @@
 
       var visualizer = document.getElementById("visualizer");
       visualizer.style.display = 'none';
-    }
-
-    function startPopupAnimation() {
-      var popup = document.getElementById("popup");
-      var maxX = window.innerWidth - popup.clientWidth;
-      var maxY = window.innerHeight - popup.clientHeight;
-
-      setInterval(function() {
-        // Randomly position the popup
-        var x = Math.floor(Math.random() * maxX);
-        var y = Math.floor(Math.random() * maxY);
-
-        popup.style.transform = "translate(" + x + "px, " + y + "px)";
-      }, 5000);
-    }
-
-    function openLink() {
-      window.open("https://soundcloud.com/intrntchld");
     }
   </script>
 </body>
