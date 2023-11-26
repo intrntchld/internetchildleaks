@@ -46,50 +46,54 @@
       margin-right: 5px;
     }
 
+    #visualizer {
+      width: 100%;
+      height: 150px;
+      background-color: #000; /* Visualizer background color */
+      margin-top: 50px;
+    }
+
     #musicPlayer {
-      margin-top: 20px;
-      width: 100%; /* Full width for better visibility */
-      background-color: #c0c0c0; /* Windows 98 button background color */
-      border: none;
-      color: #000; /* Windows 98 button text color */
-      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: rgba(192, 192, 192, 0.7); /* Transparent background */
       padding: 12px;
     }
 
     #playlist {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
       align-items: center;
+      padding: 20px;
     }
 
     .playlist-item {
       display: flex;
-      margin: 5px;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px;
     }
 
     .playlist-item img {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
     }
 
     .playlist-item span {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-align: center;
     }
 
     /* Additional styles for dynamic elements */
-    #visualizer {
-      width: 100%;
-      height: 100px;
-      background-color: #000; /* Visualizer background color */
-      margin-top: 20px;
-    }
-
     .moving-icon {
       position: absolute;
       animation: moveIcon 2s linear infinite alternate, moveIconRandom 5s linear infinite;
+      display: none;
     }
 
     @keyframes moveIcon {
@@ -100,7 +104,7 @@
 
     @keyframes moveIconRandom {
       to {
-        transform: translateX(calc(100vw - 50px)) translateY(calc(100vh - 50px));
+        transform: translate(calc(100vw - 50px), calc(100vh - 50px));
       }
     }
   </style>
@@ -116,17 +120,19 @@
 
     <div id="visualizer"></div>
 
-    <audio controls id="musicPlayer" controlsList="nodownload" autoplay>
-      <source src="dnb.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-    </audio>
+    <div id="musicPlayer" class="controls">
+      <audio controls id="audioPlayer" controlsList="nodownload" autoplay onplay="showIcons()" onpause="hideIcons()">
+        <source src="dnb.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+      </audio>
+    </div>
 
     <div id="playlist" class="playlist-buttons"></div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      var musicPlayer = document.getElementById("musicPlayer");
+      var audioPlayer = document.getElementById("audioPlayer");
       var playlistContainer = document.getElementById("playlist");
       var visualizer = document.getElementById("visualizer");
 
@@ -170,28 +176,27 @@
         var button = document.createElement("button");
         button.textContent = song.name;
         button.addEventListener("click", function() {
-          musicPlayer.src = song.url;
+          audioPlayer.src = song.url;
+          audioPlayer.play();
         });
         playlistContainer.appendChild(button);
       });
 
-      musicPlayer.addEventListener("ended", function() {
+      audioPlayer.addEventListener("ended", function() {
         var currentIndex = playlist.findIndex(function(item) {
-          return item.url === musicPlayer.currentSrc;
+          return item.url === audioPlayer.currentSrc;
         });
 
         var nextIndex = (currentIndex + 1) % playlist.length;
 
-        musicPlayer.src = playlist[nextIndex].url;
+        audioPlayer.src = playlist[nextIndex].url;
+        audioPlayer.play();
       });
 
-      musicPlayer.src = playlist[0].url;
+      audioPlayer.src = playlist[0].url;
 
       // Create dynamic moving icons
-      createMovingIcon("🎵", "50%", "50%");
-      createMovingIcon("🎤", "30%", "80%");
-      createMovingIcon("🎸", "70%", "20%");
-      // Add more icons as needed
+      createMovingIcons();
     });
 
     function backToMainPage() {
@@ -200,13 +205,36 @@
       radioApp.style.display = 'none';
     }
 
-    function createMovingIcon(icon, top, left) {
-      var movingIcon = document.createElement("div");
-      movingIcon.className = "moving-icon";
-      movingIcon.innerHTML = icon;
-      movingIcon.style.top = top;
-      movingIcon.style.left = left;
-      document.body.appendChild(movingIcon);
+    function showIcons() {
+      var movingIcons = document.getElementsByClassName("moving-icon");
+      for (var i = 0; i < movingIcons.length; i++) {
+        movingIcons[i].style.display = 'block';
+      }
+    }
+
+    function hideIcons() {
+      var movingIcons = document.getElementsByClassName("moving-icon");
+      for (var i = 0; i < movingIcons.length; i++) {
+        movingIcons[i].style.display = 'none';
+      }
+    }
+
+    function createMovingIcons() {
+      var iconChars = ['🎵', '🎤', '🎸', '🥁', '🎷', '🎺', '🎹', '🎻', '🔊', '🎶'];
+      var iconContainer = document.body;
+
+      for (var i = 0; i < iconChars.length; i++) {
+        var top = Math.random() * window.innerHeight + 'px';
+        var left = Math.random() * window.innerWidth + 'px';
+
+        var movingIcon = document.createElement("div");
+        movingIcon.className = "moving-icon";
+        movingIcon.innerHTML = iconChars[i];
+        movingIcon.style.top = top;
+        movingIcon.style.left = left;
+
+        iconContainer.appendChild(movingIcon);
+      }
     }
   </script>
 </body>
