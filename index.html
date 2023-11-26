@@ -17,16 +17,48 @@
       background-color: #008080; /* Windows 98 teal background color */
     }
 
+    .desktop {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      background-color: #c0c0c0; /* Windows 98 icon background color */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .icon img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .icon span {
+      font-size: 10px; /* Adjusted font size for app names */
+    }
+
+    h1 {
+      color: #fff; /* Windows 98 white text color */
+      text-align: center;
+    }
+
     /* Radio station app styles */
     #radioApp {
       text-align: center;
-      position: relative;
+      display: none; /* Initially hidden */
     }
 
     #backButton {
-      position: absolute;
-      top: 10px;
-      left: 10px;
+      margin-top: 10px;
       padding: 8px;
       cursor: pointer;
       background-color: #c0c0c0; /* Windows 98 button background color */
@@ -47,34 +79,6 @@
       margin-right: 5px;
     }
 
-    #visualizer-container {
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1; /* Bring to the foreground */
-    }
-
-    #visualizer {
-      width: 100%;
-      height: 100%;
-      background-color: #000; /* Visualizer background color */
-    }
-
-    .moving-icon {
-      position: absolute;
-      animation: moveIcon 1s linear infinite alternate;
-      display: none; /* Initially hidden */
-      pointer-events: none; /* Allow clicks to go through icons */
-    }
-
-    @keyframes moveIcon {
-      to {
-        transform: translate(calc(100vw - 50px), calc(100vh - 50px));
-      }
-    }
-
     #musicPlayerContainer {
       position: fixed;
       bottom: 0;
@@ -84,7 +88,6 @@
       padding: 12px;
       box-sizing: border-box;
       display: none; /* Initially hidden */
-      z-index: 1; /* Bring to the foreground */
     }
 
     #musicPlayer {
@@ -95,9 +98,10 @@
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
     }
 
-    #playlistButtons {
+    .playlist-buttons {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
       margin-top: 10px;
     }
 
@@ -114,9 +118,58 @@
     .playlist-buttons button:hover {
       background-color: #808080; /* Windows 98 button hover background color */
     }
+
+    /* Additional styles for dynamic elements */
+    #visualizer-container {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1; /* Send to the background */
+      pointer-events: none; /* Allow clicks to go through visualizer */
+    }
+
+    #visualizer {
+      width: 100%;
+      height: 100%;
+      background-color: transparent; /* Transparent background for visualizer */
+    }
+
+    .moving-icon {
+      position: absolute;
+      animation: moveIcon 1s linear infinite alternate;
+      display: none; /* Initially hidden */
+      pointer-events: none; /* Allow clicks to go through icons */
+    }
+
+    @keyframes moveIcon {
+      to {
+        transform: translate(calc(100vw - 50px), calc(100vh - 50px));
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="desktop">
+    <!-- Mock Apps -->
+    <div class="icon" onclick="openApp('browser')">
+      <img src="Steve-Zondicons-Browser-Window.48.png" alt="Browser Icon">
+      <span>Browser</span>
+    </div>
+
+    <div class="icon" onclick="openApp('calculator')">
+      <img src="Pelfusion-Folded-Flat-Calculator.48.png" alt="Calculator Icon">
+      <span>Calculator</span>
+    </div>
+
+    <!-- Link to Radio Station Page -->
+    <a class="icon" href="#" onclick="openApp('radio')">
+      <img src="Icons8-Windows-8-Music-Radio-1.48.png" alt="Radio Icon">
+      <span>Radio</span>
+    </a>
+  </div>
+
   <div id="radioApp">
     <button id="backButton" onclick="backToMainPage()">
       <img src="https://img.icons8.com/material-rounded/24/000000/circled-left-2.png" alt="Back Arrow">
@@ -143,6 +196,7 @@
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
       var playlistButtonsContainer = document.getElementById("playlistButtons");
+      var visualizerContainer = document.getElementById("visualizer-container");
 
       var playlist = [
         {
@@ -150,6 +204,18 @@
           artist: 'Internet Child',
           url: 'dnb.mp3',
           cover: 'aOYd0JMr0CnEPDinqfKE--1--c3x2d.jpg',
+        },
+        {
+          name: 'Function',
+          artist: 'Internet Child',
+          url: 'kast.mp3',
+          cover: 'DJ logo Photo.jpg',
+        },
+        {
+          name: 'Throw some Ds',
+          artist: 'Internet Child',
+          url: 'Throw Some Ds- Track 1.mp3',
+          cover: 'DJ logo Photo.jpg',
         },
         // Add more "stations" following the same format
       ];
@@ -179,13 +245,36 @@
       }
     });
 
-    function backToMainPage() {
+    function openApp(app) {
+      var radioApp = document.getElementById("radioApp");
+      var desktop = document.querySelector(".desktop");
       var musicPlayerContainer = document.getElementById("musicPlayerContainer");
       var visualizerContainer = document.getElementById("visualizer-container");
 
+      if (app === 'radio') {
+        radioApp.style.display = 'block';
+        desktop.style.display = 'none';
+        musicPlayerContainer.style.display = 'block';
+        visualizerContainer.style.zIndex = '-1'; // Send visualizer to the background
+        startAnimation();
+      } else if (app === 'browser') {
+        alert('Error: This is a simulation. The browser is not functional.');
+      } else if (app === 'calculator') {
+        alert('Error: This is a simulation. The calculator is not functional.');
+      }
+      // Add more app functionality as needed
+    }
+
+    function backToMainPage() {
+      var radioApp = document.getElementById("radioApp");
+      var desktop = document.querySelector(".desktop");
+      var musicPlayerContainer = document.getElementById("musicPlayerContainer");
+      var visualizerContainer = document.getElementById("visualizer-container");
+
+      radioApp.style.display = 'none';
+      desktop.style.display = 'grid';
       musicPlayerContainer.style.display = 'none';
       stopAnimation();
-      visualizerContainer.style.display = 'none';
     }
 
     function startAnimation() {
@@ -195,10 +284,7 @@
         icon.style.display = "block";
       });
 
-      var visualizer = document.getElementById("visualizer");
-      visualizer.style.display = 'block';
-
-      // Add logic to make the visualizer react to the different frequencies of the song
+      document.getElementById("visualizer-container").style.zIndex = "1"; // Bring visualizer to the foreground
     }
 
     function stopAnimation() {
@@ -208,8 +294,7 @@
         icon.style.display = "none";
       });
 
-      var visualizer = document.getElementById("visualizer");
-      visualizer.style.display = 'none';
+      document.getElementById("visualizer-container").style.zIndex = "-1"; // Send visualizer to the background
     }
   </script>
 </body>
