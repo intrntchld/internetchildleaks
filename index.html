@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Internet child Radio Station</title>
+  <title>Internet Child</title>
 
   <style>
     /* Windows 98 desktop styles */
@@ -52,10 +52,33 @@
     }
 
     /* Radio station app styles */
-    audio {
-      width: 100%;
-      max-width: 400px;
+    #radioApp {
+      text-align: center;
+    }
+
+    #backButton {
       margin-top: 10px;
+      padding: 8px;
+      cursor: pointer;
+      background-color: #c0c0c0; /* Windows 98 button background color */
+      border: none;
+      color: #000; /* Windows 98 button text color */
+      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+    }
+
+    #backButton:hover {
+      background-color: #808080; /* Windows 98 button hover background color */
+    }
+
+    #musicPlayer {
+      margin-top: 20px;
+      width: 80%; /* Adjusted width for better visual */
+      max-width: 400px; /* Maximum width for consistency */
+      background-color: #c0c0c0; /* Windows 98 button background color */
+      border: none;
+      color: #000; /* Windows 98 button text color */
+      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+      padding: 8px;
     }
 
     .playlist-buttons {
@@ -77,29 +100,6 @@
 
     .playlist-buttons button:hover {
       background-color: #808080; /* Windows 98 button hover background color */
-    }
-
-    /* Additional styles for radio station page */
-    #radioApp {
-      text-align: center;
-    }
-
-    #backButton {
-      margin-top: 10px;
-      padding: 8px;
-      cursor: pointer;
-      background-color: #c0c0c0; /* Windows 98 button background color */
-      border: none;
-      color: #000; /* Windows 98 button text color */
-      font-family: 'Arial', sans-serif; /* Windows 98 font style */
-    }
-
-    #backButton:hover {
-      background-color: #808080; /* Windows 98 button hover background color */
-    }
-
-    #musicPlayer {
-      margin-top: 20px;
     }
   </style>
 </head>
