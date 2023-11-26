@@ -15,6 +15,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      overflow: hidden; /* Hide overflow to prevent scroll bars */
     }
 
     .desktop {
@@ -112,21 +113,31 @@
     }
 
     /* Additional styles for dynamic elements */
+    #visualizer-container {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1; /* Send to the background */
+      display: none; /* Initially hidden */
+    }
+
     #visualizer {
       width: 100%;
-      height: 100px;
+      height: 100%;
       background-color: #000; /* Visualizer background color */
-      margin-top: 20px;
     }
 
     .moving-icon {
       position: absolute;
       animation: moveIcon 1s linear infinite alternate;
+      display: none; /* Initially hidden */
     }
 
     @keyframes moveIcon {
       to {
-        transform: translateX(20px);
+        transform: translate(calc(100vw - 50px), calc(100vh - 50px));
       }
     }
   </style>
@@ -157,9 +168,16 @@
       Back to Main Page
     </button>
 
-    <div id="visualizer"></div>
+    <!-- Visualizer Container -->
+    <div id="visualizer-container">
+      <div id="visualizer"></div>
+      <!-- Moving Icons -->
+      <div class="moving-icon">🎵</div>
+      <div class="moving-icon">🎤</div>
+      <!-- Add more icons as needed -->
+    </div>
 
-    <audio controls id="musicPlayer" controlsList="nodownload" autoplay>
+    <audio controls id="musicPlayer" controlsList="nodownload" onplay="startAnimation()">
       <source src="dnb.mp3" type="audio/mp3">
       Your browser does not support the audio tag.
     </audio>
@@ -168,10 +186,12 @@
   </div>
 
   <script>
+    var animationStarted = false;
+
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
       var playlistButtonsContainer = document.getElementById("playlistButtons");
-      var visualizer = document.getElementById("visualizer");
+      var visualizerContainer = document.getElementById("visualizer-container");
 
       var playlist = [
         {
@@ -214,12 +234,15 @@
         musicPlayer.src = playlist[nextIndex].url;
       });
 
-      musicPlayer.src = playlist[0].url;
+      // Initialize moving icons and visualizer
+      createMovingIcon("🎵");
+      createMovingIcon("🎤");
+      initializeVisualizer();
 
-      // Create dynamic moving icons
-      createMovingIcon("🎵", 50, 50);
-      createMovingIcon("🎤", 80, 120);
-      // Add more icons as needed
+      // Check if music is initially playing
+      if (!musicPlayer.paused) {
+        startAnimation();
+      }
     });
 
     function openApp(app) {
@@ -244,15 +267,45 @@
 
       radioApp.style.display = 'none';
       desktop.style.display = 'grid';
+
+      // Stop animation when leaving the radio station page
+      stopAnimation();
     }
 
-    function createMovingIcon(icon, top, left) {
+    function createMovingIcon(icon) {
       var movingIcon = document.createElement("div");
       movingIcon.className = "moving-icon";
       movingIcon.innerHTML = icon;
-      movingIcon.style.top = top + "px";
-      movingIcon.style.left = left + "px";
-      document.body.appendChild(movingIcon);
+      document.getElementById("visualizer-container").appendChild(movingIcon);
+    }
+
+    function initializeVisualizer() {
+      // Add visualizer initialization code here
+      // For simplicity, you can use the existing visualizer code
+    }
+
+    function startAnimation() {
+      if (!animationStarted) {
+        // Start moving icons and show visualizer
+        document.querySelectorAll(".moving-icon").forEach(function(icon) {
+          icon.style.animation = "moveIcon 1s linear infinite alternate";
+          icon.style.display = "block";
+        });
+
+        document.getElementById("visualizer-container").style.display = "block";
+        animationStarted = true;
+      }
+    }
+
+    function stopAnimation() {
+      // Stop moving icons and hide visualizer
+      document.querySelectorAll(".moving-icon").forEach(function(icon) {
+        icon.style.animation = "none";
+        icon.style.display = "none";
+      });
+
+      document.getElementById("visualizer-container").style.display = "none";
+      animationStarted = false;
     }
   </script>
 </body>
