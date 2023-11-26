@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You found me </title>
+  <title>You Found it </title>
 
   <style>
     body {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column; /* Added to arrange items vertically */
       height: 100vh;
       margin: 0;
       background: url('0jdwhf_deb827042b451fbac129655435b528703eacb069.jpg') no-repeat center center fixed;
@@ -23,22 +24,38 @@
     audio {
       width: 100%;
       max-width: 400px; /* Adjust the maximum width of the audio player */
-     }
- </style>
+      margin-bottom: 20px; /* Added space below the audio player */
+    }
+
+    .playlist-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .playlist-buttons button {
+      margin: 5px;
+      padding: 8px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div>
-    <h1>Leaks</h1>
+    <h1>The Leaks </h1>
 
     <audio controls id="musicPlayer" controlsList="nodownload">
       <source src="Throw Some Ds- Track 1.mp3" type="audio/mp3">
       Your browser does not support the audio tag.
     </audio>
+
+    <div class="playlist-buttons" id="playlistButtons"></div>
   </div>
 
- <script>
+  <script>
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
+      var playlistButtonsContainer = document.getElementById("playlistButtons");
 
       var playlist = [
         {
@@ -46,17 +63,32 @@
           artist: 'Internet Child',
           url: 'dnb.mp3',
           cover: 'aOYd0JMr0CnEPDinqfKE--1--c3x2d.jpg',
-          lrc: 'URL_TO_YOUR_LYRICS_FILE_1.lrc',
         },
         {
-          name: 'Function',
-          artist: 'Internet Child',
-          url: 'kast.mp3.mp3',
-          cover: 'DJ logo Photo.jpg',
-          lrc: 'URL_TO_YOUR_LYRICS_FILE_2.lrc',
+          name: 'Song 2',
+          artist: 'Artist 2',
+          url: 'URL_TO_YOUR_SECOND_MUSIC_FILE.mp3',
+          cover: 'URL_TO_YOUR_COVER_IMAGE_2.jpg',
+        },
+        {
+         name: 'Throw Some Ds',
+          artist: 'Internet child ',
+          url: 'Throw Some Ds- Track 1.mp3',
+          cover: 'URL_TO_YOUR_COVER_IMAGE_2.jpg',
         },
         // Add more songs following the same format
       ];
+
+      playlist.forEach(function(song, index) {
+        // Create a button for each song
+        var button = document.createElement("button");
+        button.textContent = song.name;
+        button.addEventListener("click", function() {
+          // Set the clicked song as the current source
+          musicPlayer.src = song.url;
+        });
+        playlistButtonsContainer.appendChild(button);
+      });
 
       musicPlayer.addEventListener("ended", function() {
         // Play the next song when the current one ends
@@ -75,3 +107,4 @@
   </script>
 </body>
 </html>
+
