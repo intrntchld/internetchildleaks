@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Internet child</title>
+  <title>Windows 98 Radio Station</title>
 
   <style>
     /* Windows 98 desktop styles */
@@ -52,10 +52,41 @@
     }
 
     /* Radio station app styles */
-    audio {
-      width: 100%;
-      max-width: 400px;
+    #radioApp {
+      text-align: center;
+    }
+
+    #backButton {
       margin-top: 10px;
+      padding: 8px;
+      cursor: pointer;
+      background-color: #c0c0c0; /* Windows 98 button background color */
+      border: none;
+      color: #000; /* Windows 98 button text color */
+      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+      display: flex;
+      align-items: center;
+    }
+
+    #backButton:hover {
+      background-color: #808080; /* Windows 98 button hover background color */
+    }
+
+    #backButton img {
+      width: 20px; /* Adjusted arrow size */
+      height: 20px;
+      margin-right: 5px;
+    }
+
+    #musicPlayer {
+      margin-top: 20px;
+      width: 90%; /* Increased width for better visibility */
+      max-width: 500px; /* Maximum width for consistency */
+      background-color: #c0c0c0; /* Windows 98 button background color */
+      border: none;
+      color: #000; /* Windows 98 button text color */
+      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+      padding: 12px;
     }
 
     .playlist-buttons {
@@ -79,27 +110,23 @@
       background-color: #808080; /* Windows 98 button hover background color */
     }
 
-    /* Additional styles for radio station page */
-    #radioApp {
-      text-align: center;
-    }
-
-    #backButton {
-      margin-top: 10px;
-      padding: 8px;
-      cursor: pointer;
-      background-color: #c0c0c0; /* Windows 98 button background color */
-      border: none;
-      color: #000; /* Windows 98 button text color */
-      font-family: 'Arial', sans-serif; /* Windows 98 font style */
-    }
-
-    #backButton:hover {
-      background-color: #808080; /* Windows 98 button hover background color */
-    }
-
-    #musicPlayer {
+    /* Additional styles for dynamic elements */
+    #visualizer {
+      width: 100%;
+      height: 100px;
+      background-color: #000; /* Visualizer background color */
       margin-top: 20px;
+    }
+
+    .moving-icon {
+      position: absolute;
+      animation: moveIcon 1s linear infinite alternate;
+    }
+
+    @keyframes moveIcon {
+      to {
+        transform: translateX(20px);
+      }
     }
   </style>
 </head>
@@ -126,7 +153,12 @@
   </div>
 
   <div id="radioApp" style="display: none;">
-    <button id="backButton" onclick="backToMainPage()">Back to Main Page</button>
+    <button id="backButton" onclick="backToMainPage()">
+      <img src="https://img.icons8.com/material-rounded/24/000000/circled-left-2.png" alt="Back Arrow">
+      Back to Main Page
+    </button>
+
+    <div id="visualizer"></div>
 
     <audio controls id="musicPlayer" controlsList="nodownload" autoplay>
       <source src="dnb.mp3" type="audio/mp3">
@@ -140,6 +172,7 @@
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
       var playlistButtonsContainer = document.getElementById("playlistButtons");
+      var visualizer = document.getElementById("visualizer");
 
       var playlist = [
         {
@@ -183,6 +216,11 @@
       });
 
       musicPlayer.src = playlist[0].url;
+
+      // Create dynamic moving icons
+      createMovingIcon("🎵", 50, 50);
+      createMovingIcon("🎤", 80, 120);
+      // Add more icons as needed
     });
 
     function openApp(app) {
@@ -207,6 +245,15 @@
 
       radioApp.style.display = 'none';
       desktop.style.display = 'grid';
+    }
+
+    function createMovingIcon(icon, top, left) {
+      var movingIcon = document.createElement("div");
+      movingIcon.className = "moving-icon";
+      movingIcon.innerHTML = icon;
+      movingIcon.style.top = top + "px";
+      movingIcon.style.left = left + "px";
+      document.body.appendChild(movingIcon);
     }
   </script>
 </body>
