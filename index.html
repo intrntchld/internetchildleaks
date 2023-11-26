@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>internet child </title>
+  <title>Windows 98 Radio Station</title>
 
   <style>
     /* Windows 98 desktop styles */
@@ -14,7 +14,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background-color: #333; /* Dark background color for visualizer */
+      background-color: #008080; /* Windows 98 teal background color */
     }
 
     .desktop {
@@ -55,7 +55,6 @@
     #radioApp {
       text-align: center;
       display: none; /* Initially hidden */
-      padding-bottom: 120px; /* Space for music player at the bottom */
     }
 
     #backButton {
@@ -134,7 +133,7 @@
     #visualizer {
       width: 100%;
       height: 100%;
-      background-color: #000; /* Visualizer background color */
+      background-color: transparent; /* Transparent background for visualizer */
     }
 
     .moving-icon {
@@ -177,16 +176,13 @@
       Back to Main Page
     </button>
 
-    <!-- Visualizer Container -->
     <div id="visualizer-container">
       <div id="visualizer"></div>
-      <!-- Moving Icons -->
       <div class="moving-icon">🎵</div>
       <div class="moving-icon">🎤</div>
       <!-- Add more icons as needed -->
     </div>
 
-    <!-- Music Player and Playlist -->
     <div id="musicPlayerContainer">
       <audio controls id="musicPlayer" controlsList="nodownload" autoplay>
         <source src="dnb.mp3" type="audio/mp3">
@@ -304,3 +300,4 @@
   </script>
 </body>
 </html>
+
