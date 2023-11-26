@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Windows 98 Radio Station</title>
+  <title>Internet child</title>
 
   <style>
     /* Windows 98 desktop styles */
@@ -96,7 +96,7 @@
     .moving-icon {
       position: absolute;
       animation: moveIcon 5s linear infinite alternate;
-      display: none; /* Initially hidden */
+      display: block; /* Initially visible */
       pointer-events: none; /* Allow clicks to go through icons */
       z-index: 3; /* Bring the icons to the foreground */
     }
@@ -110,7 +110,7 @@
     .music-icon {
       position: absolute;
       animation: bounceIcon 3s linear infinite alternate;
-      display: none; /* Initially hidden */
+      display: block; /* Initially visible */
       pointer-events: none; /* Allow clicks to go through icons */
       z-index: 2; /* Bring the icons to the foreground */
     }
@@ -144,7 +144,7 @@
 
   <div id="radioApp">
     <button id="backButton" onclick="backToMainPage()">
-      <img src="https://img.icons8.com/material-rounded/24/000000/circled-left-2.png" alt="Back Arrow">
+      <img src="Icons8-Ios7-Arrows-Back.48.png" alt="Back Arrow">
     </button>
 
     <div id="visualizer-container">
