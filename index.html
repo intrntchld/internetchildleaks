@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Windows 98 Radio Station</title>
+  <title>internet child </title>
 
   <style>
     /* Windows 98 desktop styles */
@@ -14,7 +14,6 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      overflow: hidden; /* Hide overflow to prevent scroll bars */
       background-color: #333; /* Dark background color for visualizer */
     }
 
@@ -56,7 +55,7 @@
     #radioApp {
       text-align: center;
       display: none; /* Initially hidden */
-      padding-bottom: 50px; /* Space for music player at the bottom */
+      padding-bottom: 120px; /* Space for music player at the bottom */
     }
 
     #backButton {
@@ -89,6 +88,7 @@
       background-color: #c0c0c0; /* Windows 98 button background color */
       padding: 12px;
       box-sizing: border-box;
+      display: none; /* Initially hidden */
     }
 
     #musicPlayer {
@@ -201,6 +201,7 @@
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
       var playlistButtonsContainer = document.getElementById("playlistButtons");
+      var visualizerContainer = document.getElementById("visualizer-container");
 
       var playlist = [
         {
@@ -252,28 +253,32 @@
     function openApp(app) {
       var radioApp = document.getElementById("radioApp");
       var desktop = document.querySelector(".desktop");
+      var musicPlayerContainer = document.getElementById("musicPlayerContainer");
+      var visualizerContainer = document.getElementById("visualizer-container");
 
       if (app === 'radio') {
         radioApp.style.display = 'block';
         desktop.style.display = 'none';
+        musicPlayerContainer.style.display = 'block';
+        visualizerContainer.style.zIndex = '-1'; // Send visualizer to the background
         startAnimation();
       } else if (app === 'browser') {
         alert('Error: This is a simulation. The browser is not functional.');
       } else if (app === 'calculator') {
         alert('Error: This is a simulation. The calculator is not functional.');
       }
-
       // Add more app functionality as needed
     }
 
     function backToMainPage() {
       var radioApp = document.getElementById("radioApp");
       var desktop = document.querySelector(".desktop");
+      var musicPlayerContainer = document.getElementById("musicPlayerContainer");
+      var visualizerContainer = document.getElementById("visualizer-container");
 
       radioApp.style.display = 'none';
       desktop.style.display = 'grid';
-
-      // Stop animation when leaving the radio station page
+      musicPlayerContainer.style.display = 'none';
       stopAnimation();
     }
 
