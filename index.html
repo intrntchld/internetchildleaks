@@ -11,65 +11,33 @@
       background: #008080; /* Windows 98 teal background color */
       margin: 0;
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    .desktop {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      padding: 10px;
-    }
-
-    .icon {
-      width: 50px;
-      height: 50px;
-      background-color: #c0c0c0; /* Windows 98 icon background color */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 5px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .icon img {
-      width: 30px;
-      height: 30px;
-    }
-
-    .icon span {
-      font-size: 10px; /* Adjusted font size for app names */
+      overflow: hidden;
+      position: relative;
     }
 
     h1 {
       color: #fff; /* Windows 98 white text color */
       text-align: center;
+      margin: 20px 0;
     }
 
     /* Radio station app styles */
     #radioApp {
       text-align: center;
+      padding: 20px;
     }
 
     #backButton {
-      margin-top: 10px;
-      padding: 8px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
       cursor: pointer;
-      background-color: #c0c0c0; /* Windows 98 button background color */
+      background: none;
       border: none;
-      color: #000; /* Windows 98 button text color */
+      color: #fff; /* Windows 98 white text color */
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
       display: flex;
       align-items: center;
-    }
-
-    #backButton:hover {
-      background-color: #808080; /* Windows 98 button hover background color */
     }
 
     #backButton img {
@@ -80,8 +48,7 @@
 
     #musicPlayer {
       margin-top: 20px;
-      width: 90%; /* Increased width for better visibility */
-      max-width: 500px; /* Maximum width for consistency */
+      width: 100%; /* Full width for better visibility */
       background-color: #c0c0c0; /* Windows 98 button background color */
       border: none;
       color: #000; /* Windows 98 button text color */
@@ -89,25 +56,27 @@
       padding: 12px;
     }
 
-    .playlist-buttons {
+    #playlist {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 10px;
     }
 
-    .playlist-buttons button {
+    .playlist-item {
+      display: flex;
       margin: 5px;
-      padding: 8px;
-      cursor: pointer;
-      background-color: #c0c0c0; /* Windows 98 button background color */
-      border: none;
-      color: #000; /* Windows 98 button text color */
-      font-family: 'Arial', sans-serif; /* Windows 98 font style */
     }
 
-    .playlist-buttons button:hover {
-      background-color: #808080; /* Windows 98 button hover background color */
+    .playlist-item img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .playlist-item span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* Additional styles for dynamic elements */
@@ -120,43 +89,30 @@
 
     .moving-icon {
       position: absolute;
-      animation: moveIcon 1s linear infinite alternate;
+      animation: moveIcon 2s linear infinite alternate, moveIconRandom 5s linear infinite;
     }
 
     @keyframes moveIcon {
       to {
-        transform: translateX(20px);
+        transform: translateY(20px);
+      }
+    }
+
+    @keyframes moveIconRandom {
+      to {
+        transform: translateX(calc(100vw - 50px)) translateY(calc(100vh - 50px));
       }
     }
   </style>
 </head>
 <body>
-  <div class="desktop">
-    <!-- Mock Apps -->
-    <div class="icon" onclick="openApp('browser')">
-      <img src="Steve-Zondicons-Browser-Window.48.png" alt="Browser Icon">
-      <span>Browser</span>
-    </div>
-
-    <div class="icon" onclick="openApp('calculator')">
-      <img src="Pelfusion-Folded-Flat-Calculator.48.png" alt="Calculator Icon">
-      <span>Calculator</span>
-    </div>
-
-    <!-- Add more mock apps as needed -->
-
-    <!-- Radio Station App -->
-    <div class="icon" onclick="openApp('radio')">
-      <img src="Icons8-Windows-8-Music-Radio-1.48.png" alt="Radio Icon">
-      <span>Radio</span>
-    </div>
-  </div>
-
-  <div id="radioApp" style="display: none;">
+  <div id="radioApp">
     <button id="backButton" onclick="backToMainPage()">
       <img src="https://img.icons8.com/material-rounded/24/000000/circled-left-2.png" alt="Back Arrow">
-      Back to Main Page
+      Back
     </button>
+
+    <h1>Internet Child Radio Station</h1>
 
     <div id="visualizer"></div>
 
@@ -165,13 +121,13 @@
       Your browser does not support the audio tag.
     </audio>
 
-    <div class="playlist-buttons" id="playlistButtons"></div>
+    <div id="playlist" class="playlist-buttons"></div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
-      var playlistButtonsContainer = document.getElementById("playlistButtons");
+      var playlistContainer = document.getElementById("playlist");
       var visualizer = document.getElementById("visualizer");
 
       var playlist = [
@@ -197,12 +153,26 @@
       ];
 
       playlist.forEach(function(song, index) {
+        var playlistItem = document.createElement("div");
+        playlistItem.className = "playlist-item";
+
+        var coverImg = document.createElement("img");
+        coverImg.src = song.cover;
+        coverImg.alt = "Cover Image";
+
+        var trackInfo = document.createElement("span");
+        trackInfo.textContent = song.name + ' - ' + song.artist;
+
+        playlistItem.appendChild(coverImg);
+        playlistItem.appendChild(trackInfo);
+        playlistContainer.appendChild(playlistItem);
+
         var button = document.createElement("button");
         button.textContent = song.name;
         button.addEventListener("click", function() {
           musicPlayer.src = song.url;
         });
-        playlistButtonsContainer.appendChild(button);
+        playlistContainer.appendChild(button);
       });
 
       musicPlayer.addEventListener("ended", function() {
@@ -218,41 +188,24 @@
       musicPlayer.src = playlist[0].url;
 
       // Create dynamic moving icons
-      createMovingIcon("🎵", 50, 50);
-      createMovingIcon("🎤", 80, 120);
+      createMovingIcon("🎵", "50%", "50%");
+      createMovingIcon("🎤", "30%", "80%");
+      createMovingIcon("🎸", "70%", "20%");
       // Add more icons as needed
     });
 
-    function openApp(app) {
-      var radioApp = document.getElementById("radioApp");
-      var desktop = document.querySelector(".desktop");
-
-      if (app === 'radio') {
-        radioApp.style.display = 'block';
-        desktop.style.display = 'none';
-      } else if (app === 'browser') {
-        alert('Error: This is a simulation. The browser is not functional.');
-      } else if (app === 'calculator') {
-        alert('Error: This is a simulation. The calculator is not functional.');
-      }
-
-      // Add more app functionality as needed
-    }
-
     function backToMainPage() {
       var radioApp = document.getElementById("radioApp");
-      var desktop = document.querySelector(".desktop");
 
       radioApp.style.display = 'none';
-      desktop.style.display = 'grid';
     }
 
     function createMovingIcon(icon, top, left) {
       var movingIcon = document.createElement("div");
       movingIcon.className = "moving-icon";
       movingIcon.innerHTML = icon;
-      movingIcon.style.top = top + "px";
-      movingIcon.style.left = left + "px";
+      movingIcon.style.top = top;
+      movingIcon.style.left = left;
       document.body.appendChild(movingIcon);
     }
   </script>
