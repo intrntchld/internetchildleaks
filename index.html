@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>internetchild</title>
+  <title>Windows 98 Radio Station</title>
 
   <style>
     /* Windows 98 desktop styles */
@@ -70,6 +70,7 @@
       font-family: 'Arial', sans-serif; /* Windows 98 font style */
       display: flex;
       align-items: center;
+      z-index: 2; /* Bring arrow to the foreground */
     }
 
     #backButton:hover {
@@ -102,6 +103,8 @@
       position: absolute;
       animation: moveIcon 1s linear infinite alternate;
       pointer-events: none; /* Allow clicks to go through icons */
+      display: none; /* Initially hidden */
+      z-index: 2; /* Bring moving icons to the foreground */
     }
 
     @keyframes moveIcon {
@@ -198,7 +201,6 @@
     document.addEventListener("DOMContentLoaded", function() {
       var musicPlayer = document.getElementById("musicPlayer");
       var playlistButtonsContainer = document.getElementById("playlistButtons");
-      var visualizerContainer = document.getElementById("visualizer-container");
 
       var playlist = [
         {
