@@ -124,16 +124,21 @@
     /* Voting system styles */
     #votingContainer {
       position: absolute;
-      top: 50%;
+      top: 10px;
       right: 10px;
-      transform: translateY(-50%);
       text-align: left;
       color: #fff;
+      z-index: 1;
     }
 
     #voteList {
       list-style-type: none;
       padding: 0;
+    }
+
+    /* Playlist buttons styles */
+    #playlistButtons {
+      margin-top: 80px; /* Adjusted margin to make room for voting */
     }
   </style>
 </head>
@@ -162,6 +167,11 @@
       <img src="Icons8-Ios7-Arrows-Back.48.png" alt="Back Arrow">
     </button>
 
+    <div id="votingContainer">
+      <h2>Votes</h2>
+      <ul id="voteList"></ul>
+    </div>
+
     <div id="visualizer-container">
       <div id="visualizer"></div>
       <div class="moving-icon">🎵</div>
@@ -179,12 +189,6 @@
       </audio>
 
       <div class="playlist-buttons" id="playlistButtons"></div>
-    </div>
-
-    <!-- Voting system -->
-    <div id="votingContainer">
-      <h2>Votes</h2>
-      <ul id="voteList"></ul>
     </div>
   </div>
 
@@ -221,14 +225,352 @@
         var button = document.createElement("button");
         button.textContent = song.name;
         button.addEventListener("click", function() {
-          musicPlayer.src = song.url;
+          if (song.votes < 1) {
+            voteForTrack(index);
+          } else {
+            alert('You can only vote for each song once.');
+          }
         });
 
         // Add voting button for each track
         var voteButton = document.createElement("button");
         voteButton.textContent = "Vote";
         voteButton.addEventListener("click", function() {
-          voteForTrack(index);
+          if (song.votes < 1) {
+            voteForTrack(index);
+          } else {
+            alert('You can only vote for each song once.');
+          }
+        });
+
+        // Display voting button and track name
+        playlistButtonsContainer.appendChild(button);
+        playlistButtonsContainer.appendChild(voteButton);
+
+        // Display votes off to the side
+        var voteListItem = document.createElement("li");
+        voteListItem.innerHTML = `<strong>${song.name}:</strong> <span id="voteCount-${index}">${song.votes}</span> votes`;
+        document.getElementById("voteList").appendChild(voteListItem);
+      });
+
+      musicPlayer.addEventListener("ended", function() {
+        var currentIndex = playlist.findIndex(function(item) {
+          return item.url === musicPlayer.currentSrc;
+        });
+
+        var nextIndex = (currentIndex + 1) % playlist.length;
+
+        musicPlayer.src = playlist[nextIndex].url;
+      });
+
+      // Check if music is initially playing
+      if (!musicPlayer.paused) {
+        startAnimation();
+      }
+    });
+
+    function openApp(app) {
+      var radioApp = document.getElementById("radioApp");
+      var desktop = document.querySelector(".desktop");
+      var musicPlayerContainer = document.getElementById("musicPlayerContainer");
+      var visualizerContainer = document.getElementById("visualizer-container");
+
+      if (app === 'radio') {
+        radioApp.style.display = 'block';
+        desktop.style.display = 'none';
+        musicPlayerContainer.style.display = 'block';
+        visualizerContainer.style.zIndex = '-1'; // Send visualizer to the background
+        startAnimation();
+      } else if (app === 'browser') {
+        alert('Error: This is a simulation. The browser is not functional.');
+      } else if (app === 'calculator') {
+        alert('Error: This is a simulation. The calculator is not functional.');
+      }
+      // Add more app functionality as needed
+    }
+
+    function backToMainPage() {
+      var radioApp = document.getElementById("radioApp");
+      var desktop = document.querySelector(".desktop");
+      var musicPlayerContainer = document.getElementById("musicPlayerContainer");
+      var visualizerContainer = document.getElementById("visualizer-container");
+
+      radioApp.style.display = 'none';
+      desktop.style.display = 'grid';
+      musicPlayerContainer.style.display = 'none';
+      stopAnimation();
+    }
+
+    function startAnimation() {
+      // Start moving icons and show visualizer
+      document.querySelectorAll(".moving-icon, .music-icon").forEach(function(icon) {
+        icon.style.animation = "moveIcon 5s linear infinite alternate";
+        icon.style.display = "block";
+      });
+
+      document.getElementById("visualizer-container").style.zIndex = "1"; // Bring visualizer to the foreground
+    }
+
+    function stopAnimation() {
+      // Stop moving icons and hide visualizer
+      document.querySelectorAll(".moving-icon, .music-icon").forEach(function(icon) {
+        icon.style.animation = "none";
+        icon.style.display = "none";
+      });
+
+      document.getElementById("visualizer-container").style.zIndex = "-1"; // Send visualizer to the background
+    }
+
+    function voteForTrack(index) {
+      playlist[index].votes++;
+      document.getElementById(`voteCount-${index}`).textContent = playlist[index].votes;
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internet child</title>
+
+  <style>
+    /* Windows 98 desktop styles */
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #008080; /* Windows 98 teal background color */
+      overflow: hidden; /* Hide overflow for moving icons */
+    }
+
+    .desktop {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      background-color: #c0c0c0; /* Windows 98 icon background color */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .icon img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .icon span {
+      font-size: 10px; /* Adjusted font size for app names */
+    }
+
+    /* Radio station app styles */
+    #radioApp {
+      text-align: center;
+      display: none; /* Initially hidden */
+      position: relative; /* Position relative for absolute positioning of the back button */
+    }
+
+    #backButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      padding: 8px;
+      cursor: pointer;
+      background-color: #c0c0c0; /* Windows 98 button background color */
+      border: none;
+      color: #000; /* Windows 98 button text color */
+      font-family: 'Arial', sans-serif; /* Windows 98 font style */
+      z-index: 2; /* Bring the arrow to the foreground */
+    }
+
+    #backButton:hover {
+      background-color: #808080; /* Windows 98 button hover background color */
+    }
+
+    #backButton img {
+      width: 20px; /* Adjusted arrow size */
+      height: 20px;
+      margin-right: 5px;
+    }
+
+    #visualizer-container {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1; /* Send to the background */
+      pointer-events: none; /* Allow clicks to go through visualizer */
+    }
+
+    #visualizer {
+      width: 100%;
+      height: 100%;
+      background-color: transparent; /* Transparent background for visualizer */
+    }
+
+    .moving-icon {
+      position: absolute;
+      animation: moveIcon 5s linear infinite alternate;
+      display: block; /* Initially visible */
+      pointer-events: none; /* Allow clicks to go through icons */
+      z-index: 3; /* Bring the icons to the foreground */
+    }
+
+    @keyframes moveIcon {
+      to {
+        transform: translate(calc(100vw - 50px), calc(100vh - 50px));
+      }
+    }
+
+    .music-icon {
+      position: absolute;
+      animation: bounceIcon 3s linear infinite alternate;
+      display: block; /* Initially visible */
+      pointer-events: none; /* Allow clicks to go through icons */
+      z-index: 2; /* Bring the icons to the foreground */
+    }
+
+    @keyframes bounceIcon {
+      to {
+        transform: translateY(-20px);
+      }
+    }
+
+    /* Voting system styles */
+    #votingContainer {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      text-align: left;
+      color: #fff;
+      z-index: 1;
+    }
+
+    #voteList {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    /* Playlist buttons styles */
+    #playlistButtons {
+      margin-top: 80px; /* Adjusted margin to make room for voting */
+    }
+  </style>
+</head>
+<body>
+  <div class="desktop">
+    <!-- Mock Apps -->
+    <div class="icon" onclick="openApp('browser')">
+      <img src="Steve-Zondicons-Browser-Window.48.png" alt="Browser Icon">
+      <span>Browser</span>
+    </div>
+
+    <div class="icon" onclick="openApp('calculator')">
+      <img src="Pelfusion-Folded-Flat-Calculator.48.png" alt="Calculator Icon">
+      <span>Calculator</span>
+    </div>
+
+    <!-- Link to Radio Station Page -->
+    <a class="icon" href="#" onclick="openApp('radio')">
+      <img src="Icons8-Windows-8-Music-Radio-1.48.png" alt="Radio Icon">
+      <span>Radio</span>
+    </a>
+  </div>
+
+  <div id="radioApp">
+    <button id="backButton" onclick="backToMainPage()">
+      <img src="Icons8-Ios7-Arrows-Back.48.png" alt="Back Arrow">
+    </button>
+
+    <div id="votingContainer">
+      <h2>Votes</h2>
+      <ul id="voteList"></ul>
+    </div>
+
+    <div id="visualizer-container">
+      <div id="visualizer"></div>
+      <div class="moving-icon">🎵</div>
+      <div class="moving-icon">🎤</div>
+      <!-- Add more icons as needed -->
+      <div class="music-icon">🎸</div>
+      <div class="music-icon">🎹</div>
+      <div class="music-icon">🎺</div>
+    </div>
+
+    <div id="musicPlayerContainer">
+      <audio controls id="musicPlayer" controlsList="nodownload" autoplay>
+        <source src="dnb.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+      </audio>
+
+      <div class="playlist-buttons" id="playlistButtons"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var musicPlayer = document.getElementById("musicPlayer");
+      var playlistButtonsContainer = document.getElementById("playlistButtons");
+      var visualizerContainer = document.getElementById("visualizer-container");
+
+      var playlist = [
+        {
+          name: 'Ghost',
+          artist: 'Internet Child',
+          url: 'Ghost.mp3',
+          cover: 'aOYd0JMr0CnEPDinqfKE--1--c3x2d.jpg',
+        },
+        {
+          name: 'Function',
+          artist: 'Internet Child',
+          url: 'kast.mp3',
+          cover: 'DJ logo Photo.jpg',
+        },
+        {
+          name: 'Throw some Ds',
+          artist: 'Internet Child',
+          url: 'Throw Some Ds- Track 1.mp3',
+          cover: 'DJ logo Photo.jpg',
+        },
+        // Add more "stations" following the same format
+      ];
+
+      playlist.forEach(function(song, index) {
+        song.votes = 0; // Add votes property to each track
+        var button = document.createElement("button");
+        button.textContent = song.name;
+        button.addEventListener("click", function() {
+          if (song.votes < 1) {
+            voteForTrack(index);
+          } else {
+            alert('You can only vote for each song once.');
+          }
+        });
+
+        // Add voting button for each track
+        var voteButton = document.createElement("button");
+        voteButton.textContent = "Vote";
+        voteButton.addEventListener("click", function() {
+          if (song.votes < 1) {
+            voteForTrack(index);
+          } else {
+            alert('You can only vote for each song once.');
+          }
         });
 
         // Display voting button and track name
