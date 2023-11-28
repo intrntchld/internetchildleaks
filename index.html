@@ -120,6 +120,21 @@
         transform: translateY(-20px);
       }
     }
+
+    /* Voting system styles */
+    #votingContainer {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      text-align: left;
+      color: #fff;
+    }
+
+    #voteList {
+      list-style-type: none;
+      padding: 0;
+    }
   </style>
 </head>
 <body>
@@ -165,6 +180,12 @@
 
       <div class="playlist-buttons" id="playlistButtons"></div>
     </div>
+
+    <!-- Voting system -->
+    <div id="votingContainer">
+      <h2>Votes</h2>
+      <ul id="voteList"></ul>
+    </div>
   </div>
 
   <script>
@@ -177,7 +198,7 @@
         {
           name: 'Ghost',
           artist: 'Internet Child',
-          url: 'dnb.mp3',
+          url: 'Ghost.mp3',
           cover: 'aOYd0JMr0CnEPDinqfKE--1--c3x2d.jpg',
         },
         {
@@ -196,12 +217,28 @@
       ];
 
       playlist.forEach(function(song, index) {
+        song.votes = 0; // Add votes property to each track
         var button = document.createElement("button");
         button.textContent = song.name;
         button.addEventListener("click", function() {
           musicPlayer.src = song.url;
         });
+
+        // Add voting button for each track
+        var voteButton = document.createElement("button");
+        voteButton.textContent = "Vote";
+        voteButton.addEventListener("click", function() {
+          voteForTrack(index);
+        });
+
+        // Display voting button and track name
         playlistButtonsContainer.appendChild(button);
+        playlistButtonsContainer.appendChild(voteButton);
+
+        // Display votes off to the side
+        var voteListItem = document.createElement("li");
+        voteListItem.innerHTML = `<strong>${song.name}:</strong> <span id="voteCount-${index}">${song.votes}</span> votes`;
+        document.getElementById("voteList").appendChild(voteListItem);
       });
 
       musicPlayer.addEventListener("ended", function() {
@@ -270,6 +307,11 @@
       });
 
       document.getElementById("visualizer-container").style.zIndex = "-1"; // Send visualizer to the background
+    }
+
+    function voteForTrack(index) {
+      playlist[index].votes++;
+      document.getElementById(`voteCount-${index}`).textContent = playlist[index].votes;
     }
   </script>
 </body>
