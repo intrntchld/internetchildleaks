@@ -6,17 +6,23 @@ document.addEventListener('DOMContentLoaded', function() {
   const status = document.querySelector('.status');
   const progressIndicator = document.getElementById('progressIndicator');
   const movingIconsContainer = document.getElementById('movingIcons');
+  const visualizer = document.getElementById('visualizer');
+  const ctx = visualizer.getContext('2d');
 
   let isPlaying = false;
+  let audioContext;
+  let analyser;
+  let dataArray;
 
   playButton.addEventListener('click', function() {
     if (!isPlaying) {
       isPlaying = true;
       status.textContent = 'Status: Playing';
-      audioPlayer.src = 'Granular Synthesis.mp3'; // Replace with the actual path to your audio file
+      audioPlayer.src = 'ghost.mp3'; // Replace with the actual path to your audio file
       audioPlayer.play();
+      initializeVisualizer();
       updateProgressBar();
-      createMovingIcon();
+      createMovingIcons();
     }
   });
 
@@ -30,6 +36,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  function initializeVisualizer() {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaElementSource(audioPlayer);
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+    analyser.fftSize = 256;
+    const bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+
+    drawVisualizer();
+  }
+
+  function drawVisualizer() {
+    analyser.getByteFrequencyData(dataArray);
+    ctx.clearRect(0, 0, visualizer.width, visualizer.height);
+
+    const barWidth = visualizer.width / dataArray.length;
+
+    for (let i = 0; i < dataArray.length; i++) {
+      const barHeight = dataArray[i] * 2;
+      const x = i * barWidth;
+      const y = visualizer.height - barHeight;
+      ctx.fillStyle = `rgb(${barHeight}, 0, 0)`;
+      ctx.fillRect(x, y, barWidth, barHeight);
+    }
+
+    requestAnimationFrame(drawVisualizer);
+  }
+
   function updateProgressBar() {
     if (isPlaying) {
       const duration = audioPlayer.duration;
@@ -40,23 +76,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function createMovingIcon() {
-    const icon = document.createElement('div');
-    icon.textContent = '🌐'; // Custom cyber icon
-    icon.className = 'moving-icon';
-    movingIconsContainer.appendChild(icon);
+  function createMovingIcons() {
+    const iconCount = 10; // Adjust the number of icons as needed
 
-    const animation = icon.animate(
-      [
-        { transform: 'translate(0, 0)' },
-        { transform: 'translate(50px, 50px)' },
-      ],
-      {
-        duration: 2000, // Adjust the duration as needed
-        easing: 'linear',
-        iterations: Infinity,
-        direction: 'alternate',
-      }
-    );
+    for (let i = 0; i < iconCount; i++) {
+      const icon = document.createElement('div');
+      icon.textContent = '🌐'; // Custom cyber icon
+      icon.className = 'moving-icon';
+      movingIconsContainer.appendChild(icon);
+
+      const animation = icon.animate(
+        [
+          { transform: 'translate(0, 0)' },
+          { transform: `translate(${Math.random() * 200}px, ${Math.random() * 200}px)` },
+        ],
+        {
+          duration: Math.random() * 4000 + 2000, // Random duration between 2s and 6s
+          easing: 'linear',
+          iterations: Infinity,
+          direction: 'alternate',
+        }
+      );
+    }
   }
 });
