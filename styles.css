@@ -1,95 +1,102 @@
-/* styles.css */
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
+// script.js
+document.addEventListener('DOMContentLoaded', function() {
+  const playButton = document.getElementById('playButton');
+  const stopButton = document.getElementById('stopButton');
+  const audioPlayer = document.querySelector('.audio-player');
+  const status = document.querySelector('.status');
+  const progressIndicator = document.getElementById('progressIndicator');
+  const movingIconsContainer = document.getElementById('movingIcons');
+  const visualizer = document.getElementById('visualizer');
+  const ctx = visualizer.getContext('2d');
 
-.cyber-container {
-  width: 100%;
-  max-width: 600px; /* Adjust the max-width as needed */
-}
+  let isPlaying = false;
+  let audioContext;
+  let analyser;
+  let dataArray;
 
-.cyber-window {
-  background-color: #333;
-  border: 2px solid #00F;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-}
+  playButton.addEventListener('click', function() {
+    if (!isPlaying) {
+      isPlaying = true;
+      status.textContent = 'Status: Playing';
+      audioPlayer.src = 'ghost.mp3'; // Replace with the actual path to your audio file
+      audioPlayer.play();
+      initializeVisualizer();
+      updateProgressBar();
+      createMovingIcons();
+    }
+  });
 
-.cyber-title-bar {
-  background: #00F;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  stopButton.addEventListener('click', function() {
+    if (isPlaying) {
+      isPlaying = false;
+      status.textContent = 'Status: Stopped';
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      progressIndicator.style.width = '0';
+    }
+  });
 
-.cyber-title-bar-text {
-  color: #fff;
-  font-weight: bold;
-}
+  function initializeVisualizer() {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaElementSource(audioPlayer);
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+    analyser.fftSize = 256;
+    const bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
 
-.cyber-title-bar-controls button {
-  width: 16px;
-  height: 16px;
-  margin-left: 5px;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
+    drawVisualizer();
+  }
 
-.cyber-content {
-  padding: 20px;
-}
+  function drawVisualizer() {
+    analyser.getByteFrequencyData(dataArray);
+    ctx.clearRect(0, 0, visualizer.width, visualizer.height);
 
-.music-player {
-  margin-bottom: 20px;
-}
+    const barWidth = visualizer.width / dataArray.length;
 
-button, input {
-  margin: 5px;
-}
+    for (let i = 0; i < dataArray.length; i++) {
+      const barHeight = dataArray[i] * 2;
+      const x = i * barWidth;
+      const y = visualizer.height - barHeight;
+      ctx.fillStyle = `rgb(${barHeight}, 0, 0)`;
+      ctx.fillRect(x, y, barWidth, barHeight);
+    }
 
-.status {
-  font-size: 14px;
-  color: #00F;
-}
+    requestAnimationFrame(drawVisualizer);
+  }
 
-.progress-bar {
-  height: 10px;
-  background-color: #fff;
-  position: relative;
-}
+  function updateProgressBar() {
+    if (isPlaying) {
+      const duration = audioPlayer.duration;
+      const currentTime = audioPlayer.currentTime;
+      const progressPercentage = (currentTime / duration) * 100;
+      progressIndicator.style.width = progressPercentage + '%';
+      requestAnimationFrame(updateProgressBar);
+    }
+  }
 
-#progressIndicator {
-  height: 100%;
-  width: 0;
-  background-color: #0F0;
-  position: absolute;
-}
+  function createMovingIcons() {
+    const iconCount = 10; // Adjust the number of icons as needed
 
-.moving-icons {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
+    for (let i = 0; i < iconCount; i++) {
+      const icon = document.createElement('div');
+      icon.textContent = '🌐'; // Custom cyber icon
+      icon.className = 'moving-icon';
+      movingIconsContainer.appendChild(icon);
 
-.moving-icon {
-  position: absolute;
-  font-size: 24px;
-  color: #0F0;
-  animation: moveIcon 2s linear infinite;
-}
-
-@keyframes moveIcon {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(50px, 50px); }
-}
+      const animation = icon.animate(
+        [
+          { transform: 'translate(0, 0)' },
+          { transform: `translate(${Math.random() * 200}px, ${Math.random() * 200}px)` },
+        ],
+        {
+          duration: Math.random() * 4000 + 2000, // Random duration between 2s and 6s
+          easing: 'linear',
+          iterations: Infinity,
+          direction: 'alternate',
+        }
+      );
+    }
+  }
+});
