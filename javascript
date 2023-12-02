@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!isPlaying) {
       isPlaying = true;
       status.textContent = 'Status: Playing';
-      audioPlayer.src = 'ghost.mp3'; // Replace with the actual path to your audio file
+      audioPlayer.src = 'audioPlayer.src = 'granular_synthesis.mp3'; // or 'cyber_synthesis.mp3' 
+'; // Replace with the actual path to your audio file
       audioPlayer.play();
       initializeVisualizer();
       updateProgressBar();
