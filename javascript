@@ -15,15 +15,41 @@ document.addEventListener('DOMContentLoaded', function() {
   let dataArray;
 
   playButton.addEventListener('click', function() {
-    if (!isPlaying) {
-      isPlaying = true;
-      status.textContent = 'Status: Playing';
-      audioPlayer.src = 'audioPlayer.src = 'granular_synthesis.mp3'; // or 'cyber_synthesis.mp3' 
-'; // Replace with the actual path to your audio file
-      audioPlayer.play();
-      initializeVisualizer();
-      updateProgressBar();
-      createMovingIcons();
+  if (!isPlaying) {
+    isPlaying = true;
+    status.textContent = 'Status: Playing';
+    audioPlayer.src = 'ghost.mp3'; // Replace with the actual path to your first song
+    audioPlayer.play();
+    initializeVisualizer();
+    updateProgressBar();
+    createMovingIcons();
+playButton.addEventListener('click', function() {
+  if (!isPlaying) {
+    isPlaying = true;
+    status.textContent = 'Status: Playing';
+    audioPlayer.src = 'granular_synthesis.mp3'; // Replace with the actual path to your second song
+    audioPlayer.play();
+    initializeVisualizer();
+    updateProgressBar();
+    createMovingIcons();
+playButton.addEventListener('click', function() {
+  if (!isPlaying) {
+    isPlaying = true;
+    status.textContent = 'Status: Playing';
+    audioPlayer.src = 'cyber_synthesis.mp3'; // Replace with the actual path to your third song
+    audioPlayer.play();
+    initializeVisualizer();
+    updateProgressBar();
+    createMovingIcons();
+  }
+});
+
+  }
+});
+
+  }
+});
+
     }
   });
 
