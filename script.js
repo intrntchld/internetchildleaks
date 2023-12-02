@@ -14,11 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
   let analyser;
   let dataArray;
 
-  playButton.addEventListener('click', function() {
+
+playButton.addEventListener('click', function() {
   if (!isPlaying) {
     isPlaying = true;
     status.textContent = 'Status: Playing';
-    audioPlayer.src = 'ghost.mp3'; // Replace with the actual path to your first song
+    audioPlayer.src = 'Granular Synthesis.mp3'; // Replace with the actual path to your second song
     audioPlayer.play();
     initializeVisualizer();
     updateProgressBar();
@@ -27,29 +28,11 @@ playButton.addEventListener('click', function() {
   if (!isPlaying) {
     isPlaying = true;
     status.textContent = 'Status: Playing';
-    audioPlayer.src = 'granular_synthesis.mp3'; // Replace with the actual path to your second song
+    audioPlayer.src = 'Cyber Synthesis (Mastered with Thunder at 50pct).mp3'; // Replace with the actual path to your third song
     audioPlayer.play();
     initializeVisualizer();
     updateProgressBar();
     createMovingIcons();
-playButton.addEventListener('click', function() {
-  if (!isPlaying) {
-    isPlaying = true;
-    status.textContent = 'Status: Playing';
-    audioPlayer.src = 'cyber_synthesis.mp3'; // Replace with the actual path to your third song
-    audioPlayer.play();
-    initializeVisualizer();
-    updateProgressBar();
-    createMovingIcons();
-  }
-});
-
-  }
-});
-
-  }
-});
-
     }
   });
 
