@@ -9,6 +9,7 @@
 </head>
 <body>
   <div class="cyber-container">
+    <div class="moving-icons" id="movingIcons"></div>
     <div class="cyber-window">
       <div class="cyber-title-bar">
         <div class="cyber-title-bar-text">Cyberwave Music Player</div>
@@ -19,6 +20,7 @@
         </div>
       </div>
       <div class="cyber-content">
+        <canvas class="visualizer" id="visualizer"></canvas>
         <div class="music-player" id="musicPlayer">
           <audio class="audio-player" type="audio/mp3"></audio>
           <div class="controls">
@@ -33,7 +35,6 @@
         </div>
       </div>
     </div>
-    <div class="moving-icons" id="movingIcons"></div>
   </div>
 
   <script src="script.js"></script>
