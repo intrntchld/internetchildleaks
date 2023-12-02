@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!isPlaying) {
       isPlaying = true;
       status.textContent = 'Status: Playing';
-      audioPlayer.src = 'audio-file.mp3'; // Replace with the actual path to your audio file
+      audioPlayer.src = 'https://github.com/intrntchld/internetchildleaks/blob/main/Granular%20Synthesis%20(Mastered%20with%20Thunder%20at%2050pct).mp3'; // Replace with the actual path to your audio file
       audioPlayer.play();
       updateProgressBar();
       createMovingIcon();
