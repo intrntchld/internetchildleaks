@@ -1,276 +1,41 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>internet child </title>
-
-  <style>
-    /* Windows 98 desktop styles */
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif; /* Windows 98 font style */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #008080; /* Windows 98 teal background color */
-      overflow: hidden; /* Hide overflow for moving icons */
-    }
-
-    .desktop {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      padding: 10px;
-    }
-
-    .icon {
-      width: 50px;
-      height: 50px;
-      background-color: #c0c0c0; /* Windows 98 icon background color */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 5px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .icon img {
-      width: 30px;
-      height: 30px;
-    }
-
-    .icon span {
-      font-size: 10px; /* Adjusted font size for app names */
-    }
-
-    /* Radio station app styles */
-    #radioApp {
-      text-align: center;
-      display: none; /* Initially hidden */
-      position: relative; /* Position relative for absolute positioning of the back button */
-    }
-
-    #backButton {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      padding: 8px;
-      cursor: pointer;
-      background-color: #c0c0c0; /* Windows 98 button background color */
-      border: none;
-      color: #000; /* Windows 98 button text color */
-      font-family: 'Arial', sans-serif; /* Windows 98 font style */
-      z-index: 2; /* Bring the arrow to the foreground */
-    }
-
-    #backButton:hover {
-      background-color: #808080; /* Windows 98 button hover background color */
-    }
-
-    #backButton img {
-      width: 20px; /* Adjusted arrow size */
-      height: 20px;
-      margin-right: 5px;
-    }
-
-    #visualizer-container {
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1; /* Send to the background */
-      pointer-events: none; /* Allow clicks to go through visualizer */
-    }
-
-    #visualizer {
-      width: 100%;
-      height: 100%;
-      background-color: transparent; /* Transparent background for visualizer */
-    }
-
-    .moving-icon {
-      position: absolute;
-      animation: moveIcon 5s linear infinite alternate;
-      display: block; /* Initially visible */
-      pointer-events: none; /* Allow clicks to go through icons */
-      z-index: 3; /* Bring the icons to the foreground */
-    }
-
-    @keyframes moveIcon {
-      to {
-        transform: translate(calc(100vw - 50px), calc(100vh - 50px));
-      }
-    }
-
-    .music-icon {
-      position: absolute;
-      animation: bounceIcon 3s linear infinite alternate;
-      display: block; /* Initially visible */
-      pointer-events: none; /* Allow clicks to go through icons */
-      z-index: 2; /* Bring the icons to the foreground */
-    }
-
-    @keyframes bounceIcon {
-      to {
-        transform: translateY(-20px);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
+  <title>Cyberwave Music Player</title>
 </head>
 <body>
-  <div class="desktop">
-    <!-- Mock Apps -->
-    <div class="icon" onclick="openApp('browser')">
-      <img src="Steve-Zondicons-Browser-Window.48.png" alt="Browser Icon">
-      <span>Browser</span>
+  <div class="cyber-container">
+    <div class="cyber-window">
+      <div class="cyber-title-bar">
+        <div class="cyber-title-bar-text">Cyberwave Music Player</div>
+        <div class="cyber-title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="cyber-content">
+        <div class="music-player" id="musicPlayer">
+          <audio class="audio-player" type="audio/mp3"></audio>
+          <div class="controls">
+            <button id="playButton">Play</button>
+            <button id="stopButton">Stop</button>
+            <input id="volumeControl" type="range" min="0" max="1" step="0.1" value="1">
+          </div>
+          <div class="status">Status: Stopped</div>
+          <div class="progress-bar">
+            <div id="progressIndicator"></div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="icon" onclick="openApp('calculator')">
-      <img src="Pelfusion-Folded-Flat-Calculator.48.png" alt="Calculator Icon">
-      <span>Calculator</span>
-    </div>
-
-    <!-- Link to Radio Station Page -->
-    <a class="icon" href="#" onclick="openApp('radio')">
-      <img src="Icons8-Windows-8-Music-Radio-1.48.png" alt="Radio Icon">
-      <span>Radio</span>
-    </a>
+    <div class="moving-icons" id="movingIcons"></div>
   </div>
 
-  <div id="radioApp">
-    <button id="backButton" onclick="backToMainPage()">
-      <img src="Icons8-Ios7-Arrows-Back.48.png" alt="Back Arrow">
-    </button>
-
-    <div id="visualizer-container">
-      <div id="visualizer"></div>
-      <div class="moving-icon">🎵</div>
-      <div class="moving-icon">🎤</div>
-      <!-- Add more icons as needed -->
-      <div class="music-icon">🎸</div>
-      <div class="music-icon">🎹</div>
-      <div class="music-icon">🎺</div>
-    </div>
-
-    <div id="musicPlayerContainer">
-      <audio controls id="musicPlayer" controlsList="nodownload" autoplay>
-        <source src="dnb.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-      </audio>
-
-      <div class="playlist-buttons" id="playlistButtons"></div>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var musicPlayer = document.getElementById("musicPlayer");
-      var playlistButtonsContainer = document.getElementById("playlistButtons");
-      var visualizerContainer = document.getElementById("visualizer-container");
-
-      var playlist = [
-        {
-          name: 'Ghost',
-          artist: 'Internet Child',
-          url: 'Ghost (Mastered with Aurora at 50pct).mp3',
-          cover: 'aOYd0JMr0CnEPDinqfKE--1--c3x2d.jpg',
-        },
-        {
-          name: 'Granular Synthesis',
-          artist: 'Internet Child',
-          url: 'Granular Synthesis (Mastered with Thunder at 50pct).mp3',
-          cover: 'DJ logo Photo.jpg',
-        },
-        {
-          name: 'Cyber Synthesis',
-          artist: 'Internet Child',
-          url: 'Cyber Synthesis (Mastered with Thunder at 50pct).mp3',
-          cover: 'DJ logo Photo.jpg',
-        },
-        // Add more "stations" following the same format
-      ];
-
-      playlist.forEach(function(song, index) {
-        var button = document.createElement("button");
-        button.textContent = song.name;
-        button.addEventListener("click", function() {
-          musicPlayer.src = song.url;
-        });
-        playlistButtonsContainer.appendChild(button);
-      });
-
-      musicPlayer.addEventListener("ended", function() {
-        var currentIndex = playlist.findIndex(function(item) {
-          return item.url === musicPlayer.currentSrc;
-        });
-
-        var nextIndex = (currentIndex + 1) % playlist.length;
-
-        musicPlayer.src = playlist[nextIndex].url;
-      });
-
-      // Check if music is initially playing
-      if (!musicPlayer.paused) {
-        startAnimation();
-      }
-    });
-
-    function openApp(app) {
-      var radioApp = document.getElementById("radioApp");
-      var desktop = document.querySelector(".desktop");
-      var musicPlayerContainer = document.getElementById("musicPlayerContainer");
-      var visualizerContainer = document.getElementById("visualizer-container");
-
-      if (app === 'radio') {
-        radioApp.style.display = 'block';
-        desktop.style.display = 'none';
-        musicPlayerContainer.style.display = 'block';
-        visualizerContainer.style.zIndex = '-1'; // Send visualizer to the background
-        startAnimation();
-      } else if (app === 'browser') {
-        alert('Error: This is a simulation. The browser is not functional.');
-      } else if (app === 'calculator') {
-        alert('Error: This is a simulation. The calculator is not functional.');
-      }
-      // Add more app functionality as needed
-    }
-
-    function backToMainPage() {
-      var radioApp = document.getElementById("radioApp");
-      var desktop = document.querySelector(".desktop");
-      var musicPlayerContainer = document.getElementById("musicPlayerContainer");
-      var visualizerContainer = document.getElementById("visualizer-container");
-
-      radioApp.style.display = 'none';
-      desktop.style.display = 'grid';
-      musicPlayerContainer.style.display = 'none';
-      stopAnimation();
-    }
-
-    function startAnimation() {
-      // Start moving icons and show visualizer
-      document.querySelectorAll(".moving-icon, .music-icon").forEach(function(icon) {
-        icon.style.animation = "moveIcon 5s linear infinite alternate";
-        icon.style.display = "block";
-      });
-
-      document.getElementById("visualizer-container").style.zIndex = "1"; // Bring visualizer to the foreground
-    }
-
-    function stopAnimation() {
-      // Stop moving icons and hide visualizer
-      document.querySelectorAll(".moving-icon, .music-icon").forEach(function(icon) {
-        icon.style.animation = "none";
-        icon.style.display = "none";
-      });
-
-      document.getElementById("visualizer-container").style.zIndex = "-1"; // Send visualizer to the background
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
